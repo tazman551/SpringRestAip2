@@ -22,8 +22,8 @@ public interface TableRepository extends JpaRepository<tables, Long> {
     Set<tables> findByLocName(String locationName);
 
     //
-    @Query(value = "select t from tables t join fetch t.dow dow where t.id = ?1")
-    tables findById(int tableID);
+    @Query(value = "select t from tables t JOIN FETCH t.location l JOIN FETCH l.dow where t.id = ?1")
+    tables findByIdWithLocAndSched(int tableID);
 
 }
 

@@ -44,7 +44,6 @@ public class TableController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK).body(e);
         }
-        
     }
 
     @GetMapping("/api/reservations/{TableID}") 
@@ -58,6 +57,12 @@ public class TableController {
     public Set<tables> getMethodName(@PathVariable String locationName, @RequestParam String date) throws ParseException {
         return tService.getTableByLocationName(locationName);
     }
+
+    @GetMapping("/api/TableReservations/{TableID}")
+    public Object getTableReservations(@PathVariable int TableID, @RequestParam String day) throws NullPointerException, ParseException {
+        return tService.getTableAndRes(TableID, day);
+    }
+    
     
     
 

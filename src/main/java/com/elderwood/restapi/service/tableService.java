@@ -1,11 +1,12 @@
 package com.elderwood.restapi.service;
 
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -38,10 +39,12 @@ public class tableService {
 
     }
 
+    // all tables
     public List<tables> getTables() {
         return tableRepository.getTables();
     }
 
+    // only reservations
     @SuppressWarnings("unused")
     public Set<Object> getResforTable(String tableID, String date) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -52,36 +55,39 @@ public class tableService {
         return resRepository.findBytableIdAndResDate(tableID, sqlDate);
     }
 
+    // post a reservation
     public reservations postTableReservation(String entity) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'postTableReservation'");
     }
 
 
-
+    // all locations
     public Set<tables> getTableByLocationName(String locationName) throws ParseException {
       
         return tableRepository.findByLocName(locationName);
     }
 
-
     public tables getTableByID(int tableID, String date) throws NullPointerException{
-        System.out.println(date);
-        tables t = tableRepository.findById(tableID);
-
-        Iterator<daysofweek> dow = t.getDow().iterator();
-        while (dow.hasNext()) {
-            daysofweek ele = dow.next();
-            if(!ele.equals(date)) {
-                dow.remove();
-            }
-        }
-
-        System.out.println(t.getDow().toString());
-
-        return t;
+        return tableRepository.findByIdWithLocAndSched(tableID);
     }
 
+    public Object getTableAndRes(int tableID, String date) throws NullPointerException, ParseException{
+
+        //todo: need to get the date for res 
+        // and 
+        // need to get the day (Thursday) for the table schedule 
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date sqlDate = new Date(dateFormat.parse(date).getTime());
+        if(sqlDate == null){
+            throw new NullPointerException("Date can't be null");
+        }
+        tables t = tableRepository.findByIdWithLocAndSched(tableID, );
+
+        List<reservations> res = resRepository.findAllByTableIdAndResDate(tableID, sqlDate);
+
+        return null;
+    }
 
 
    

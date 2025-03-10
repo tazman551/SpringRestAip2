@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
@@ -28,13 +27,6 @@ public class tables {
     @ManyToOne(optional=true,fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id")
     private status status;
-    @ManyToMany()
-    @JoinTable(
-        name = "schedule_day", 
-        joinColumns = { @JoinColumn(name = "table_id") }, 
-        inverseJoinColumns = { @JoinColumn(name = "dow_id") }
-    )
-    private Set<daysofweek> dow;
 
     public long getId() {
         return id;
@@ -66,12 +58,5 @@ public class tables {
     public void setStatus(status status) {
         this.status = status;
     }
-    public Set<daysofweek> getDow() {
-        return dow;
-    }
-    public void setDow(Set<daysofweek> dow) {
-        this.dow = dow;
-    }
-    
 
 }

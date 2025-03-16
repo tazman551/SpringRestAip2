@@ -16,9 +16,6 @@ public class daysofweek {
     private String dayString;
     private Time time;
     
-    public Long getId() {
-        return id;
-    }
     public void setId(Long id) {
         this.id = id;
     }

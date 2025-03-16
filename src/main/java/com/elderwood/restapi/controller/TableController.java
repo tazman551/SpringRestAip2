@@ -23,20 +23,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-//@RequestMapping("/api/table")
+//@RequestMapping("/api")
 public class TableController {
 
 
     @Autowired
     tableService tService;
 
+    /* Returns all tables */
     @GetMapping("/api/tables")
     public List<tables> getAllTables() {
         return tService.getTables();
     }
 
+    /* Reutrns a table  */
     @GetMapping("/api/table/{TableID}")
-    public ResponseEntity<?> getAllTables(@PathVariable int TableID, @RequestParam String date) {
+    public ResponseEntity<?> getTableByIdAndDate(@PathVariable int TableID, @RequestParam String date) {
 
         // ResponseEntity
         try {
@@ -46,32 +48,27 @@ public class TableController {
         }
     }
 
-    @GetMapping("/api/reservations/{TableID}") 
-    public Set<Object> getResforTable(@PathVariable String TableID, @RequestParam String date) throws ParseException {
-        return tService.getResforTable(TableID, date);
-    }
-
-
-
     @GetMapping("/api/tables/{locationName}")
     public Set<tables> getMethodName(@PathVariable String locationName, @RequestParam String date) throws ParseException {
         return tService.getTableByLocationName(locationName);
     }
 
+    /* Gets all  */
     @GetMapping("/api/TableReservations/{TableID}")
-    public Object getTableReservations(@PathVariable int TableID, @RequestParam String day) throws NullPointerException, ParseException {
+    public scheduleDTO getTableReservations(@PathVariable int TableID, @RequestParam String day) throws NullPointerException, ParseException {
         return tService.getTableAndRes(TableID, day);
     }
-    
-    
     
 
     /*
      * Post Methods
      */
-    @PostMapping("reserve/table")
-    public reservations postMethodName(@RequestBody String entity) {
-        return tService.postTableReservation(entity);
+
+    /* post a reservation */
+    @PostMapping("/api/reservation")
+    public ResponseEntity postMethodName(@RequestBody String entity) {
+        tService.postTableReservation(entity);
+        return ResponseEntity.status(200).body(null);
         
     }
 

@@ -21,8 +21,7 @@ public interface ReservationsRepository extends JpaRepository<reservations, Long
     @Query(value = "Select r.resDate, r.reserved, r.timeslot from reservations r join r.table t where t.id = ?1 and r.resDate = ?2")
     Set<Object> findBytableIdAndResDate(String tableID, Date date);
 
-    @Query(value = "Select r.resDate, r.reserved, r.timeslot from reservations r join r.table t where t.id = ?1 and r.resDate = ?2")
-    List<reservations> findAllByTableIdAndResDate(int tableID, Date date);
-    
+    @Query(value = "Select r from reservations r join r.table t where t.id = ?1 and r.resDate = ?2")
+    Set<reservations> findAllByTableIdAndResDate(int tableID, Date sqlDate);
     
 }

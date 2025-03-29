@@ -21,6 +21,7 @@ public class userController {
 
     private static final Logger logger = LoggerFactory.getLogger(userController.class);
         
+    @SuppressWarnings("unused")
     private UserRepository userRepo;
     
     public userController(UserRepository userRepository){

@@ -5,37 +5,33 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.elderwood.restapi.DTO.scheduleDTO;
 import com.elderwood.restapi.configuration.CorsConfig;
-import com.elderwood.restapi.model.daysofweek;
 import com.elderwood.restapi.model.location;
 import com.elderwood.restapi.model.reservations;
 import com.elderwood.restapi.model.tables;
 import com.elderwood.restapi.repository.LocationRepository;
 import com.elderwood.restapi.repository.ReservationsRepository;
 import com.elderwood.restapi.repository.TableRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class tableService {
 
+    @SuppressWarnings("unused")
     private final CorsConfig corsConfig;
     
 
+    @SuppressWarnings("unused")
     private static final Logger logger = LoggerFactory.getLogger(tableService.class);
     
     private TableRepository tableRepository;
@@ -83,9 +79,6 @@ public class tableService {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date sqlDate = new Date(dateFormat.parse(date).getTime());
 
-        if(sqlDate == null){
-            throw new NullPointerException("Date can't be null");
-        }
         /* Fromat date string from URL into a Weekday (Monday,..., Friday) */
         String weekday = LocalDate.parse(date)
              .getDayOfWeek()

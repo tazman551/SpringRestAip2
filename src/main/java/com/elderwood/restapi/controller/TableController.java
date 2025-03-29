@@ -3,7 +3,6 @@ package com.elderwood.restapi.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.elderwood.restapi.DTO.scheduleDTO;
-import com.elderwood.restapi.model.reservations;
 import com.elderwood.restapi.model.tables;
 import com.elderwood.restapi.service.tableService;
 
@@ -66,7 +65,7 @@ public class TableController {
 
     /* post a reservation */
     @PostMapping("/api/reservation")
-    public ResponseEntity postMethodName(@RequestBody String entity) {
+    public ResponseEntity<?> postMethodName(@RequestBody String entity) {
         tService.postTableReservation(entity);
         return ResponseEntity.status(200).body(null);
         

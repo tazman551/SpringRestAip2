@@ -14,12 +14,21 @@ import com.elderwood.restapi.repository.UserRepository;
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 
-    @Autowired
     private UserRepository userRepository;
+    
+     public CustomUserDetailService(UserRepository ur){
+        this.userRepository = ur;
+     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        Optional<user> user = userRepository.findByUsername(username);
-            return (UserDetails) user.orElseThrow(()->new UsernameNotFoundException("Invalid Username"));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        user user = userRepository.findByUsername(username)
+                            .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));;
+        
+                return org.springframework.security.core.userdetails.User
+                .withUsername(user.getUsername())
+                .password(user.getPassword())
+                .roles("USER") // Assign user roles
+                .build();
     }
 }

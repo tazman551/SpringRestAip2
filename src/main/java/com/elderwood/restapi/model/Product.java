@@ -1,4 +1,4 @@
-package com.elderwood.restapi.controller;
+package com.elderwood.restapi.model;
 
 import java.math.BigDecimal;
 import jakarta.persistence.Column;
@@ -8,7 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class ProductController {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,7 +19,7 @@ public class ProductController {
     @Column(nullable = false) 
     private BigDecimal price;
     private String description;
-    @Column(nullable = false, columnDefinition = "boolean false") 
+    @Column(nullable = false, columnDefinition = "boolean default false") 
     private boolean discountable;
     @Column(nullable = false, columnDefinition = "int default 0") 
     private int quantity;

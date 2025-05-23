@@ -4,14 +4,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.elderwood.restapi.model.user;
 import com.elderwood.restapi.repository.UserRepository;
+import com.elderwood.restapi.service.JwtService;
 import com.elderwood.restapi.service.UserService;
 import com.elderwood.restapi.service.tableService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,11 +37,16 @@ public class userController {
     @SuppressWarnings("unused")
     private UserRepository userRepo;
     private UserService userService;
+    private JwtService jwtService;
+    private AuthenticationManager authenticationManager;
 
     
-    public userController(UserRepository userRepository, UserService userService){
+    public userController(UserRepository userRepository, UserService userService, JwtService jwtService
+            , AuthenticationManager authenticationManager) {
             this.userRepo = userRepository;
             this.userService = userService;
+            this.jwtService = jwtService;
+            this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/register/user")
@@ -46,16 +60,34 @@ public class userController {
     }
 
     @GetMapping("/login")
-    public ResponseEntity<Object> postMethodName(@RequestHeader("Authorization")  String header) {
-        logger.info(header);
-        String json = "{token:active}"; 
-        return new ResponseEntity<Object>(json, HttpStatus.OK);
-    }
+    public ResponseEntity<Object> login(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException{
+    String username = request.getParameter("username");
+    String password = request.getParameter("password");
 
-    @PostMapping("/auth")
-    public String postJWTAuth(@RequestBody String entity) {
-        //TODO: process POST request
-        return entity;
+    UsernamePasswordAuthenticationToken authenticationToken =
+        new UsernamePasswordAuthenticationToken(username, password);
+
+    // This will call your UserDetailsService.loadUserByUsername internally
+    Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+    // Get UserDetails from authentication
+    UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        // Generate JWT token
+        String token = jwtService.generateToken(userDetails);
+
+        // Create JSON response
+        String json = "{ \"token\": \"" + token + "\" }";
+
+        // Set the token in the response header
+        response.setHeader("Authorization", "Bearer " + token);
+
+        // Return the JSON response
+        ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(json, HttpStatus.OK);
+        logger.info("Generated JWT Token: {}", token);
+        
+        // Return the JSON response with the token
+        return responseEntity;
     }
     
     

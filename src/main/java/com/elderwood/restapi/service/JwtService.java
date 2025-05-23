@@ -18,7 +18,7 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
 
     private static final int mins = 30;
-    private static final String SECRET_KEY = "RXfgv1517!+VeryStongToken001"; // Replace with a strong secret key
+    private static final String SECRET_KEY = "8Q3n9kQw5v1Zb6Jz2x8k3Q2p7v9w6x1y4z7u8t5r6s3p0q2l1m4n5o6p7q8r9s0t"; // Replace with a strong secret key
     private static final long EXPIRATION_TIME = 1000 * 60 * mins; // milli * 1 min * 30 mins
 
     public String extractUsername(String token) {

@@ -59,10 +59,13 @@ public class userController {
         }
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<Object> login(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException{
-    String username = request.getParameter("username");
-    String password = request.getParameter("password");
+    @PostMapping("/login")
+    public ResponseEntity<Object> login(@RequestBody user user, HttpServletResponse response) throws AuthenticationException{
+    String username = user.getUsername();
+    String password = user.getPassword();
+
+    System.out.println("Username: " + username);
+    System.out.println("Password: " + password);
 
     UsernamePasswordAuthenticationToken authenticationToken =
         new UsernamePasswordAuthenticationToken(username, password);

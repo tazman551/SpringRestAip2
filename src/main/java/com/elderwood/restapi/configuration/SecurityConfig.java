@@ -16,7 +16,6 @@ import com.elderwood.restapi.repository.UserRepository;
 
 @Configuration
 @EnableWebSecurity(debug = true)
-//@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -40,7 +39,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/api/register/**").permitAll()
-                        .requestMatchers("/api/error").permitAll()
+                        .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated())
                         .httpBasic(Customizer.withDefaults())

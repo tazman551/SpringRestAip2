@@ -34,7 +34,7 @@ public class userController {
 
     private static final Logger logger = LoggerFactory.getLogger(userController.class);
         
-    @SuppressWarnings("unused")
+
     private UserRepository userRepo;
     private UserService userService;
     private JwtService jwtService;
@@ -63,9 +63,6 @@ public class userController {
     public ResponseEntity<Object> login(@RequestBody user user, HttpServletResponse response) throws AuthenticationException{
     String username = user.getUsername();
     String password = user.getPassword();
-
-    System.out.println("Username: " + username);
-    System.out.println("Password: " + password);
 
     UsernamePasswordAuthenticationToken authenticationToken =
         new UsernamePasswordAuthenticationToken(username, password);

@@ -3,6 +3,8 @@ package com.elderwood.restapi.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.elderwood.restapi.DTO.scheduleDTO;
+import com.elderwood.restapi.DTO.ReservationDTO;
+import com.elderwood.restapi.model.reservations;
 import com.elderwood.restapi.model.tables;
 import com.elderwood.restapi.service.tableService;
 
@@ -19,12 +21,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 @RestController
-//@RequestMapping("/api")
+// @RequestMapping("/api")
 public class TableController {
-
 
     @Autowired
     tableService tService;
@@ -35,7 +34,7 @@ public class TableController {
         return tService.getTables();
     }
 
-    /* Reutrns a table  */
+    /* Reutrns a table */
     @GetMapping("/api/table/{TableID}")
     public ResponseEntity<?> getTableByIdAndDate(@PathVariable int TableID, @RequestParam String date) {
 
@@ -48,16 +47,17 @@ public class TableController {
     }
 
     @GetMapping("/api/tables/{locationName}")
-    public Set<tables> getMethodName(@PathVariable String locationName, @RequestParam String date) throws ParseException {
+    public Set<tables> getMethodName(@PathVariable String locationName, @RequestParam String date)
+            throws ParseException {
         return tService.getTableByLocationName(locationName);
     }
 
-    /* Gets all  */
+    /* Gets all */
     @GetMapping("/api/TableReservations/{TableID}")
-    public scheduleDTO getTableReservations(@PathVariable int TableID, @RequestParam String day) throws NullPointerException, ParseException {
+    public scheduleDTO getTableReservations(@PathVariable int TableID, @RequestParam String day)
+            throws NullPointerException, ParseException {
         return tService.getTableAndRes(TableID, day);
     }
-    
 
     /*
      * Post Methods
@@ -65,15 +65,16 @@ public class TableController {
 
     /* post a reservation */
     @PostMapping("/api/reservation")
-    public ResponseEntity<?> postMethodName(@RequestBody String entity) {
-        tService.postTableReservation(entity);
-        return ResponseEntity.status(200).body(null);
+    public ResponseEntity<?> postReservation(@RequestBody ReservationDTO reservationDTO) {
+        System.out.println("ReservationDTO: " + reservationDTO);
         
+        reservations saved = tService.postTableReservation(reservationDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping("favicon.ico")
     @ResponseBody
     void returnNoFavicon() {
     }
-    
+
 }

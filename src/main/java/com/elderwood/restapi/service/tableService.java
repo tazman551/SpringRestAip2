@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.elderwood.restapi.DTO.ReservationDTO;
 import com.elderwood.restapi.DTO.scheduleDTO;
 import com.elderwood.restapi.configuration.CorsConfig;
 import com.elderwood.restapi.model.location;
@@ -125,9 +126,8 @@ public class tableService {
    
       // post a reservation
     @Transactional
-    public void postTableReservation(String entity) {
-        reservations reservation = new reservations();
+    public reservations postTableReservation(ReservationDTO reservationDTO) {
         
-        resRepository.save(reservation);
+        return resRepository.save(reservationDTO.toReservations());
     }
 }

@@ -45,25 +45,20 @@ public class tableService {
         this.corsConfig = corsConfig;
     }
 
-    // all tables
+    /*
+     * returns all tables
+     */
     public List<tables> getTables() {
         return tableRepository.getTables();
     }
-
-    public tables getTableByID(int tableID, String date) throws NullPointerException{
+    
+    /*
+     * returns a table by ID
+     */
+    public tables getTableByID(int tableID) throws NullPointerException{
         return tableRepository.findByIdWithLocation(tableID);
     }
 
-    // only reservations
-    @SuppressWarnings("unused")
-    public Set<Object> getResforTable(String tableID, String date) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date sqlDate = new Date(dateFormat.parse(date).getTime());
-        if(sqlDate == null){
-            throw new NullPointerException("Date can't be null");
-        }
-        return resRepository.findBytableIdAndResDate(tableID, sqlDate);
-    }
 
 
     // all locations
@@ -73,7 +68,15 @@ public class tableService {
     }
 
    
-
+    /**
+     * Get a table and its location with reservations for a specific date
+     * 
+     * @param tableID the ID of the table
+     * @param date    the date in "yyyy-MM-dd" format
+     * @return scheduleDTO containing table, location, and reservations
+     * @throws NullPointerException if the date is null or if the table/location is not found
+     * @throws ParseException       if the date format is incorrect
+     */
     public scheduleDTO getTableAndRes(int tableID, String date) throws NullPointerException, ParseException{
         /* Fromat the date from URL into a useable Date */
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -118,16 +121,17 @@ public class tableService {
         
         return sched;
     }
-
-    /*
-     * Post serivce methods
-     */
-   
-      // post a reservation
-    @Transactional
-    public void postTableReservation(String entity) {
-        reservations reservation = new reservations();
-        
-        resRepository.save(reservation);
-    }
 }
+
+
+
+    // // only reservations
+    // @SuppressWarnings("unused")
+    // public Set<Object> getResforTable(String tableID, String date) throws ParseException {
+    //     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    //     Date sqlDate = new Date(dateFormat.parse(date).getTime());
+    //     if(sqlDate == null){
+    //         throw new NullPointerException("Date can't be null");
+    //     }
+    //     return resRepository.findBytableIdAndResDate(tableID, sqlDate);
+    // }

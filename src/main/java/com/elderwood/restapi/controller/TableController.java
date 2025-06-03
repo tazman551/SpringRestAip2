@@ -18,30 +18,37 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 
 @RestController
-//@RequestMapping("/api")
+@RequestMapping("/api")
 public class TableController {
 
 
-    @Autowired
     tableService tService;
+    public TableController(tableService tService) {
+        this.tService = tService;
+    }
+    /*
+     * Get Methods
+     */
 
     /* Returns all tables */
-    @GetMapping("/api/tables")
+    @GetMapping("/tables")
     public List<tables> getAllTables() {
         return tService.getTables();
     }
 
-    /* Reutrns a table  */
+    /* Returns all tables by table ID */
+    /*  */
     @GetMapping("/api/table/{TableID}")
-    public ResponseEntity<?> getTableByIdAndDate(@PathVariable int TableID, @RequestParam String date) {
+    public ResponseEntity<?> getTableById(@PathVariable int TableID) {
 
         // ResponseEntity
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(tService.getTableByID(TableID, date.toLowerCase()));
+            return ResponseEntity.status(HttpStatus.OK).body(tService.getTableByID(TableID));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK).body(e);
         }
@@ -58,18 +65,6 @@ public class TableController {
         return tService.getTableAndRes(TableID, day);
     }
     
-
-    /*
-     * Post Methods
-     */
-
-    /* post a reservation */
-    @PostMapping("/api/reservation")
-    public ResponseEntity<?> postMethodName(@RequestBody String entity) {
-        tService.postTableReservation(entity);
-        return ResponseEntity.status(200).body(null);
-        
-    }
 
     @GetMapping("favicon.ico")
     @ResponseBody

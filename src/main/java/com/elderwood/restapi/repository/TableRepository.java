@@ -25,5 +25,7 @@ public interface TableRepository extends JpaRepository<tables, Long> {
     @Query(value = "select t from tables t left JOIN FETCH t.location l where t.id = ?1")
     tables findByIdWithLocation(int tableID);
 
+    tables findByName(String tableName);
+
 }
 

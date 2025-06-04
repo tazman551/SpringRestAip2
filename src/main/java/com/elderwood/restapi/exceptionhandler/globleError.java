@@ -1,6 +1,7 @@
 package com.elderwood.restapi.exceptionhandler;
 
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.exception.JDBCConnectionException;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class globleError {
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public String handleException(Exception ex){
-        return "Server Error: " + ex;
+     @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(Map.of("error", ex.getMessage()));
     }
     
     @ExceptionHandler(JDBCConnectionException.class)

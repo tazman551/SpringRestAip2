@@ -43,7 +43,7 @@ public class TableController {
 
     /* Returns all tables by table ID */
     /*  */
-    @GetMapping("/api/table/{TableID}")
+    @GetMapping("/table/{TableID}")
     public ResponseEntity<?> getTableById(@PathVariable int TableID) {
 
         // ResponseEntity
@@ -54,13 +54,13 @@ public class TableController {
         }
     }
 
-    @GetMapping("/api/tables/{locationName}")
+    @GetMapping("/tables/{locationName}")
     public Set<tables> getMethodName(@PathVariable String locationName, @RequestParam String date) throws ParseException {
         return tService.getTableByLocationName(locationName);
     }
 
     /* Gets all  */
-    @GetMapping("/api/TableReservations/{TableID}")
+    @GetMapping("/TableReservations/{TableID}")
     public scheduleDTO getTableReservations(@PathVariable int TableID, @RequestParam String day) throws NullPointerException, ParseException {
         return tService.getTableAndRes(TableID, day);
     }

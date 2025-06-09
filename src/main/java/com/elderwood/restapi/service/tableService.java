@@ -13,12 +13,12 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.elderwood.restapi.DTO.scheduleDTO;
+import com.elderwood.restapi.DTO.ReservationDTO;
 import com.elderwood.restapi.configuration.CorsConfig;
 import com.elderwood.restapi.model.location;
-import com.elderwood.restapi.model.reservations;
+
 import com.elderwood.restapi.model.tables;
 import com.elderwood.restapi.repository.LocationRepository;
 import com.elderwood.restapi.repository.ReservationsRepository;
@@ -97,7 +97,9 @@ public class tableService {
         */
         tables t = tableRepository.findByIdWithLocation(tableID);
         location l = locationRepository.findByID(t.getLocation().getID());
-        Set<reservations> res = resRepository.findAllByTableIdAndResDate(tableID, sqlDate);
+        Set<ReservationDTO> reservations = resRepository.findAllByTableIdAndResDate(tableID, sqlDate).stream()
+            .map(reservation -> new ReservationDTO(reservation))
+            .collect(java.util.stream.Collectors.toSet());
 
         if(t == null || l == null){
             throw new NullPointerException("Table and loaction cant be null, sql statement not working");
@@ -106,7 +108,7 @@ public class tableService {
         /* creates a scheduleDto to: 
          * return a table with its locations scheduled hours and a set of reservations for a specificed date.
          */
-        scheduleDTO schedule = createScheduleDTO(t, l, res, weekday);
+        scheduleDTO schedule = createScheduleDTO(t, l, reservations, weekday);
 
         return schedule;
     }
@@ -114,8 +116,11 @@ public class tableService {
 
 
     /* Create a Schedule DTO to return related reservation data*/
-    private scheduleDTO createScheduleDTO(tables t, location l ,Set<reservations> res, String weekday){
-        scheduleDTO sched = new scheduleDTO(t, l, res);
+    private scheduleDTO createScheduleDTO(tables table, location location ,Set<ReservationDTO> res, String weekday){
+        scheduleDTO sched = new scheduleDTO(table, location, res);
+        // Filter the location's schedule by the specified weekday
+        // This assumes that the location's schedule has a method to filter by weekday
+        // If the location's schedule does not have a method to filter by weekday,
         location filteredLocation = sched.getLocation();
         sched.getLocation().setDow(filteredLocation.getDowFilteredByWeekday(weekday));
         

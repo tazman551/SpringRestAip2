@@ -1,21 +1,37 @@
 package com.elderwood.restapi.DTO;
 
+import java.util.Set;
+
 import com.elderwood.restapi.model.reservations;
-import com.elderwood.restapi.repository.TableRepository;
 
 public class ReservationDTO {
 
-    private TableRepository tableRepository;
     private String firstname;
     private String lastname;
     private String table_name;
     private String dateString;
     private String timeString;
+    private Set<reservations> reservations;
 
-    public ReservationDTO(TableRepository tableRepository) {
-        this.tableRepository = tableRepository;
+
+
+    public ReservationDTO(reservations reservation) {
+        this.firstname = reservation.getUser().getFirstname();
+        this.lastname = reservation.getUser().getLastname();
+        this.table_name = reservation.getTable().getName();
+        this.dateString = reservation.getDate().toString();
+        this.timeString = reservation.getTimeslot().toString();
+        this.reservations = Set.of(reservation);
     }
-     
+    
+     public Set<reservations> getReservations() {
+        return reservations;
+    }
+
+
+    public void setReservations(Set<reservations> reservations) {
+        this.reservations = reservations;
+    }
 
     public String getFirstname() {
         return firstname;
@@ -57,13 +73,13 @@ public class ReservationDTO {
         this.timeString = timeString;
     }
 
-    public reservations toReservations() {
-        reservations res = new reservations();
-        res.setTable(tableRepository.findByName(table_name));
-        res.setReserved(true);
-        res.setDate(java.sql.Date.valueOf(dateString));
-        res.setTimeslot(java.sql.Time.valueOf(timeString));
-        return res;
-    }
+    // public reservations toReservations() {
+    //     reservations res = new reservations();
+    //     res.setTable(tableRepository.findByName(table_name));
+    //     res.setReserved(true);
+    //     res.setDate(java.sql.Date.valueOf(dateString));
+    //     res.setTimeslot(java.sql.Time.valueOf(timeString));
+    //     return res;
+    // }
 
 }

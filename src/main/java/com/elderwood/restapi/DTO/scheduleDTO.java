@@ -14,15 +14,15 @@ public class scheduleDTO {
     private Set<tags> tags;
     private status status;
     location location;
-    Set<reservations> res;
+    Set<ReservationDTO> reservations;
     
-    public scheduleDTO(tables t, location l, Set<reservations> res) {
+    public scheduleDTO(tables t, location l, Set<ReservationDTO> reservations) {
         this.id = t.getId();
         this.name = t.getName();
         this.tags = t.getTags();
         this.status = t.getStatus();
         this.location = l;
-        this.res = res;
+        this.reservations = reservations;
     }
     
     public Long getId() {
@@ -57,12 +57,11 @@ public class scheduleDTO {
         this.status = status;
     }
 
-    public Set<reservations> getRes() {
-        return res;
+    public Set<ReservationDTO> getReservations() {
+        return reservations;
     }
-
-    public void setRes(Set<reservations> res) {
-        this.res = res;
+    public void setReservations(Set<ReservationDTO> reservations) {
+        this.reservations = reservations;
     }
 
     public location getLocation() {

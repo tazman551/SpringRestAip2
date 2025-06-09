@@ -4,6 +4,10 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
+import com.elderwood.restapi.util.Builder;
+import com.elderwood.restapi.util.ReservationBuilder;
+
+import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +25,7 @@ public class reservations {
     @ManyToOne
     @JoinColumn(name = "table_id",referencedColumnName = "id")
     private tables table;
-    @ManyToOne
+    @ManyToOne(optional = true)
     private user user;
     private Timestamp created;
     @Column(name = "res_date",nullable = false)
@@ -29,6 +33,23 @@ public class reservations {
     private Time timeslot;
     private boolean reserved;
 
+    public reservations() {
+        // Default constructor
+    }
+    
+    public reservations(Builder builder) {
+        if (builder instanceof ReservationBuilder) {
+            ReservationBuilder reservationBuilder = (ReservationBuilder) builder;
+            this.table = reservationBuilder.getTable();
+            this.user = reservationBuilder.getUser();
+            this.resDate = reservationBuilder.getResDate();
+            this.timeslot = reservationBuilder.getTimeslot();
+            this.reserved = reservationBuilder.isReserved();
+            this.created = new Timestamp(System.currentTimeMillis());
+        } else {
+            throw new IllegalArgumentException("Invalid builder type");
+        }
+    }
 
     public Long getId() {
         return id;
@@ -73,7 +94,9 @@ public class reservations {
         this.reserved = reserved;
     }
     
-    
+    public static ReservationBuilder builder() {
+        return new ReservationBuilder();
+    }
 
     
 }

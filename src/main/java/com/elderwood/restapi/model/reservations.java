@@ -26,6 +26,7 @@ public class reservations {
     @JoinColumn(name = "table_id",referencedColumnName = "id")
     private tables table;
     @ManyToOne(optional = true)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private user user;
     private Timestamp created;
     @Column(name = "res_date",nullable = false)

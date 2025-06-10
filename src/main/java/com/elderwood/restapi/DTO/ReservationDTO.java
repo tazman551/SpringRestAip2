@@ -16,8 +16,14 @@ public class ReservationDTO {
 
 
     public ReservationDTO(reservations reservation) {
-        this.firstname = reservation.getUser().getFirstname();
-        this.lastname = reservation.getUser().getLastname();
+        if (reservation.getUser() != null) {
+            this.firstname = reservation.getUser().getFirstname();
+            this.lastname = reservation.getUser().getLastname();}
+        else {
+            this.firstname = "Guest";
+            this.lastname = "";
+        }
+        
         this.table_name = reservation.getTable().getName();
         this.dateString = reservation.getDate().toString();
         this.timeString = reservation.getTimeslot().toString();

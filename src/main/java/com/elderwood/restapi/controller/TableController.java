@@ -64,6 +64,12 @@ public class TableController {
     public scheduleDTO getTableReservations(@PathVariable int TableID, @RequestParam String day) throws NullPointerException, ParseException {
         return tService.getTableAndRes(TableID, day);
     }
+
+    // @GetMapping("/TableReservations/{TableID}")
+    // public scheduleDTO getTableReservationsJson(@RequestBody Object Json) throws NullPointerException, ParseException {
+    //    // return tService.getTableAndRes(Json.getTableID(), Json.getDay());
+    //    return null; // Placeholder for actual implementation
+    // }
     
 
     @GetMapping("favicon.ico")

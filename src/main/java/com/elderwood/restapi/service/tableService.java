@@ -80,7 +80,7 @@ public class tableService {
     public scheduleDTO getTableAndRes(int tableID, String date) throws NullPointerException, ParseException{
         /* Fromat the date from URL into a useable Date */
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date sqlDate = new Date(dateFormat.parse(date).getTime());
+        Date UtilDate = new Date(dateFormat.parse(date).getTime());
 
         /* Fromat date string from URL into a Weekday (Monday,..., Friday) */
         String weekday = LocalDate.parse(date)
@@ -97,9 +97,10 @@ public class tableService {
         */
         tables t = tableRepository.findByIdWithLocation(tableID);
         location l = locationRepository.findByID(t.getLocation().getID());
-        Set<ReservationDTO> reservations = resRepository.findAllByTableIdAndResDate(tableID, sqlDate).stream()
+        Set<ReservationDTO> reservations = resRepository.findAllByTableIdAndResDate(tableID, UtilDate).stream()
             .map(reservation -> new ReservationDTO(reservation))
             .collect(java.util.stream.Collectors.toSet());
+
 
         if(t == null || l == null){
             throw new NullPointerException("Table and loaction cant be null, sql statement not working");
@@ -123,20 +124,9 @@ public class tableService {
         // If the location's schedule does not have a method to filter by weekday,
         location filteredLocation = sched.getLocation();
         sched.getLocation().setDow(filteredLocation.getDowFilteredByWeekday(weekday));
-        
+        // Create timeslots based on the filtered schedule
+        // This assumes that the location has a method to create timeslots based on its schedule
+        sched.createTimeslots();
         return sched;
     }
 }
-
-
-
-    // // only reservations
-    // @SuppressWarnings("unused")
-    // public Set<Object> getResforTable(String tableID, String date) throws ParseException {
-    //     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    //     Date sqlDate = new Date(dateFormat.parse(date).getTime());
-    //     if(sqlDate == null){
-    //         throw new NullPointerException("Date can't be null");
-    //     }
-    //     return resRepository.findBytableIdAndResDate(tableID, sqlDate);
-    // }

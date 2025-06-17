@@ -1,6 +1,5 @@
 package com.elderwood.restapi.DTO;
 
-import java.util.Set;
 
 import com.elderwood.restapi.model.reservations;
 
@@ -11,7 +10,6 @@ public class ReservationDTO {
     private String table_name;
     private String dateString;
     private String timeString;
-    private Set<reservations> reservations;
 
 
 
@@ -27,17 +25,8 @@ public class ReservationDTO {
         this.table_name = reservation.getTable().getName();
         this.dateString = reservation.getDate().toString();
         this.timeString = reservation.getTimeslot().toString();
-        this.reservations = Set.of(reservation);
-    }
-    
-     public Set<reservations> getReservations() {
-        return reservations;
     }
 
-
-    public void setReservations(Set<reservations> reservations) {
-        this.reservations = reservations;
-    }
 
     public String getFirstname() {
         return firstname;

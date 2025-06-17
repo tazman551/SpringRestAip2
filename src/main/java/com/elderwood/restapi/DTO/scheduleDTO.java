@@ -15,6 +15,7 @@ public class scheduleDTO {
     private status status;
     location location;
     Set<ReservationDTO> reservations;
+    Set<TimeslotDTO> timeslots;
     
     public scheduleDTO(tables t, location l, Set<ReservationDTO> reservations) {
         this.id = t.getId();
@@ -72,5 +73,13 @@ public class scheduleDTO {
         this.location = location;
     }
 
+    public void createTimeslots() {
+
+        this.timeslots = new TimeslotDTO().getTimeslotsForTable(location,reservations);
+    }
+
+    public Set<TimeslotDTO> getTimeslots() {
+        return this.timeslots;
+    }
     
 }

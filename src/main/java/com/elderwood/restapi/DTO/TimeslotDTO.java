@@ -26,10 +26,14 @@ public class TimeslotDTO {
         Set<TimeslotDTO> timeslotDTOs = l.getDow().stream()
     .map(loc_Sched_slot -> {
         boolean reserved = reservations.stream()
-            .anyMatch(res -> res.getTimeString().equals(loc_Sched_slot.getTime()));
+            .anyMatch(res -> {
+                System.out.println("Time: " + loc_Sched_slot.getTime() + ", Reserved time: " + res.getTimeString());
+                return res.getTimeString().equals(loc_Sched_slot.getTime());
+            });
         TimeslotDTO timeDTO = new TimeslotDTO();
         timeDTO.setTime(loc_Sched_slot.getTime().toString());
         timeDTO.setDisabled(reserved);
+       
         return timeDTO;
     })
     .collect(Collectors.toSet());
